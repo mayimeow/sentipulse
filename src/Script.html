@@ -1,0 +1,264 @@
+<script>
+(function () {
+  'use strict';
+
+  var CATEGORIES = ['Overall Experience', 'Product Quality', 'Customer Service', 'Delivery', 'Pricing', 'Website/App', 'Other'];
+  var SENTIMENTS = ['Positive', 'Neutral', 'Mixed', 'Negative'];
+  var DEFAULT_FILTERS = { range: '30d', from: '', to: '', category: 'All', sentiment: 'All' };
+  var AUTO_REFRESH_MS = 5 * 60 * 1000;
+
+  var state = { filters: Object.assign({}, DEFAULT_FILTERS), data: null, requestId: 0 };
+
+  function $(id) { return document.getElementById(id); }
+
+  // Shared toolbox for the chart and table code in the other files
+  window.SP = {
+    renderers: [],
+    register: function (fn) { this.renderers.push(fn); },
+    esc: function (text) {
+      return String(text === null || text === undefined ? '' : text)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    },
+    colors: { Positive: '#5b8c5a', Neutral: '#b8a99a', Mixed: '#d9a441', Negative: '#b5483a',
+              accent: '#6f4e37', text: '#3e2723', muted: '#8a7768', line: '#e7dccf' },
+    getFilters: function () { return Object.assign({}, state.filters); }
+  };
+
+  /* ---------- Filters ---------- */
+
+  function fillSelect(id, values, allLabel) {
+    var el = $(id);
+    el.innerHTML = '';
+    [['All', allLabel]].concat(values.map(function (v) { return [v, v]; })).forEach(function (pair) {
+      var o = document.createElement('option');
+      o.value = pair[0];
+      o.textContent = pair[1];
+      el.appendChild(o);
+    });
+  }
+
+  function fillMonths(months) {
+    var el = $('monthSelect');
+    el.innerHTML = '';
+    var first = document.createElement('option');
+    first.value = '';
+    first.textContent = 'Pick a month';
+    el.appendChild(first);
+    (months || []).forEach(function (m) {
+      var o = document.createElement('option');
+      o.value = m.value;
+      o.textContent = m.label;
+      el.appendChild(o);
+    });
+  }
+
+  function syncFilterUI() {
+    var r = state.filters.range;
+    Array.prototype.forEach.call(document.querySelectorAll('.pill'), function (p) {
+      p.classList.toggle('active', p.getAttribute('data-range') === r);
+    });
+    $('categorySelect').value = state.filters.category;
+    $('sentimentSelect').value = state.filters.sentiment;
+    $('monthSelect').value = (r.indexOf('month:') === 0) ? r.substring(6) : '';
+    if (r === 'custom') {
+      $('fromDate').value = state.filters.from;
+      $('toDate').value = state.filters.to;
+    }
+  }
+
+  function setRange(range) {
+    state.filters.range = range;
+    state.filters.from = '';
+    state.filters.to = '';
+    syncFilterUI();
+    load(false);
+  }
+
+  function resetFilters() {
+    state.filters = Object.assign({}, DEFAULT_FILTERS);
+    $('fromDate').value = '';
+    $('toDate').value = '';
+    syncFilterUI();
+    load(false);
+  }
+
+  function applyCustomRange() {
+    var from = $('fromDate').value;
+    var to = $('toDate').value;
+    if (!from || !to) {
+      showPeriodMessage('Please choose both a start date and an end date.');
+      return;
+    }
+    if (from > to) { var t = from; from = to; to = t; }
+    state.filters.range = 'custom';
+    state.filters.from = from;
+    state.filters.to = to;
+    syncFilterUI();
+    load(false);
+  }
+
+  function showPeriodMessage(text) {
+    var el = $('periodLine');
+    el.className = 'period-line warn';
+    el.textContent = text;
+  }
+
+  function setPeriodLine(d) {
+    var el = $('periodLine');
+    el.className = 'period-line';
+    var n = d.kpis.total;
+    var html = '<b>' + SP.esc(d.period.label) + '</b> ' + SP.esc(d.period.range) +
+               ' &middot; ' + n + ' response' + (n === 1 ? '' : 's');
+    if (d.compare && d.period.compareLabel) {
+      html += ' &middot; compared with ' + SP.esc(d.period.compareLabel);
+    }
+    el.innerHTML = html;
+  }
+
+  /* ---------- Loading ---------- */
+
+  function setBusy(busy) {
+    $('statusDot').className = 'dot' + (busy ? ' busy' : '');
+    $('refreshBtn').disabled = busy;
+    $('refreshBtn').textContent = busy ? 'Loading...' : 'Refresh';
+  }
+
+  function load(force) {
+    var id = ++state.requestId;       // ignore answers that arrive late
+    setBusy(true);
+    google.script.run
+      .withSuccessHandler(function (data) { if (id === state.requestId) { onData(data); } })
+      .withFailureHandler(function (err) { if (id === state.requestId) { onFailure(err); } })
+      .getDashboardData(state.filters, !!force);
+  }
+
+  function onFailure(err) {
+    setBusy(false);
+    $('statusDot').className = 'dot bad';
+    var msg = (err && err.message) ? err.message : (typeof err === 'string' && err ? err : 'Something went wrong while loading.');
+    $('errorText').textContent = msg + (state.data ? ' Showing the last data we had.' : '');
+    $('errorBanner').hidden = false;
+    if (!state.data) {
+      $('content').hidden = true;
+      $('updatedText').textContent = 'Could not load';
+    }
+    document.body.classList.remove('first-load');
+  }
+
+  function onData(data) {
+    if (!data || !data.ok) {
+      onFailure(data && data.error ? data.error : null);
+      return;
+    }
+    setBusy(false);
+    $('errorBanner').hidden = true;
+    state.data = data;
+    render(data);
+  }
+
+  /* ---------- Rendering ---------- */
+
+  function deltaInfo(now, prev, mode, goodWhen, label) {
+    if (prev === null || prev === undefined || now === null || now === undefined) { return { text: '', cls: '' }; }
+    var suffix = ' vs ' + (label || 'previous period');
+    var diff = now - prev;
+    if (Math.abs(diff) < 0.005) { return { text: 'No change' + suffix, cls: 'flat' }; }
+    var up = diff > 0;
+    var amount;
+    if (mode === 'pct') {
+      if (prev === 0) { return { text: '\u25B2 new activity', cls: 'flat' }; }
+      amount = Math.abs(Math.round(100 * diff / prev)) + '%';
+    } else if (mode === 'pts') {
+      amount = Math.abs(Math.round(diff)) + ' pts';
+    } else {
+      amount = String(Math.abs(Math.round(diff * 100) / 100));
+    }
+    return { text: (up ? '\u25B2 ' : '\u25BC ') + amount + suffix, cls: (goodWhen === 'up') === up ? 'good' : 'bad' };
+  }
+
+  function setKpi(valueId, deltaId, valueText, valueClass, info) {
+    var v = $(valueId);
+    v.textContent = valueText;
+    v.className = 'value' + (valueClass ? ' ' + valueClass : '');
+    if (deltaId) {
+      var d = $(deltaId);
+      d.textContent = info ? info.text : '';
+      d.className = 'delta' + (info && info.cls ? ' ' + info.cls : '');
+    }
+  }
+
+  function renderKpis(d) {
+    var k = d.kpis, c = d.compare || {};
+    var has = d.compare !== null && d.compare !== undefined;
+    var label = d.period.compareLabel;
+    function cmp(field, mode, good) { return has ? deltaInfo(k[field], c[field], mode, good, label) : null; }
+
+    setKpi('kpiTotal', 'kpiTotalDelta', k.total, '', cmp('total', 'pct', 'up'));
+    setKpi('kpiRating', 'kpiRatingDelta', k.avgRating === null ? 'n/a' : k.avgRating.toFixed(1) + ' / 5', '', cmp('avgRating', 'abs', 'up'));
+
+    var scoreText = k.avgScore === null ? 'n/a' : (k.avgScore > 0 ? '+' : '') + k.avgScore.toFixed(2);
+    var scoreClass = k.avgScore === null ? '' : (k.avgScore >= 0.25 ? 'pos' : (k.avgScore <= -0.25 ? 'neg' : 'mix'));
+    setKpi('kpiScore', 'kpiScoreDelta', scoreText, scoreClass, cmp('avgScore', 'abs', 'up'));
+
+    setKpi('kpiNeg', 'kpiNegDelta', k.negativePct + '%', k.negativePct >= 40 ? 'neg' : '', cmp('negativePct', 'pts', 'down'));
+    setKpi('kpiUrgent', 'kpiUrgentDelta', k.urgent, k.urgent > 0 ? 'neg' : 'pos', cmp('urgent', 'abs', 'down'));
+
+    var problems = (k.waiting || 0) + (k.failed || 0);
+    setKpi('kpiHealth', null, problems === 0 ? 'Healthy' : problems, problems === 0 ? 'pos' : 'mix', null);
+    var sub = $('kpiHealthSub');
+    sub.textContent = problems === 0 ? 'All feedback analyzed' : k.waiting + ' waiting, ' + k.failed + ' failed';
+    sub.className = 'delta ' + (problems === 0 ? 'good' : 'flat');
+  }
+
+  function render(d) {
+    document.body.classList.remove('first-load');
+    $('businessName').textContent = d.businessName;
+    $('updatedText').textContent = 'Updated ' + d.generatedAt + (d.fromCache ? ' (cached)' : '');
+    document.title = 'SentiPulse - ' + d.businessName;
+
+    fillMonths(d.options.months);
+    $('fromDate').max = d.period.today;
+    $('toDate').max = d.period.today;
+    syncFilterUI();
+    setPeriodLine(d);
+
+    $('emptyState').hidden = !d.empty;
+    $('content').hidden = d.empty;
+    if (d.empty) { return; }
+
+    renderKpis(d);
+
+    SP.renderers.forEach(function (fn) {       // charts and tables from the other files
+      try { fn(d); } catch (e) { if (window.console) { console.error('Renderer failed', e); } }
+    });
+  }
+
+  /* ---------- Start ---------- */
+
+  function init() {
+    fillSelect('categorySelect', CATEGORIES, 'All categories');
+    fillSelect('sentimentSelect', SENTIMENTS, 'All sentiments');
+    syncFilterUI();
+
+    Array.prototype.forEach.call(document.querySelectorAll('.pill'), function (p) {
+      p.addEventListener('click', function () { setRange(p.getAttribute('data-range')); });
+    });
+    $('monthSelect').addEventListener('change', function () {
+      if (this.value) { setRange('month:' + this.value); }
+    });
+    $('applyRange').addEventListener('click', applyCustomRange);
+    $('categorySelect').addEventListener('change', function () { state.filters.category = this.value; load(false); });
+    $('sentimentSelect').addEventListener('change', function () { state.filters.sentiment = this.value; load(false); });
+    $('resetBtn').addEventListener('click', resetFilters);
+    $('emptyResetBtn').addEventListener('click', resetFilters);
+    $('refreshBtn').addEventListener('click', function () { load(true); });
+    $('retryBtn').addEventListener('click', function () { load(true); });
+
+    setInterval(function () { if (!document.hidden) { load(false); } }, AUTO_REFRESH_MS);
+    load(false);
+  }
+
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>

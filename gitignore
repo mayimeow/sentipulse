@@ -1,0 +1,19 @@
+# Apps Script / clasp
+.clasp.json
+.claspignore
+node_modules/
+
+# Secrets (keys live in Script Properties, but never commit these by accident)
+.env
+*.key
+*secret*
+
+# Personal files and screenshots with private details (keep only the cleaned ones in docs/screenshots)
+screenshots-raw/
+*.tmp
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

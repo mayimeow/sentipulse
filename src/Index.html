@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SentiPulse Dashboard</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <?!= include('Styles'); ?>
+</head>
+<body class="first-load">
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 48 48" width="34" height="34" fill="none" stroke="#f6efe6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 20h24v10a10 10 0 0 1-10 10h-4a10 10 0 0 1-10-10V20z"/>
+          <path d="M34 23h3a5 5 0 0 1 0 10h-3"/>
+          <path d="M17 6c-2 3 2 4 0 8M24 6c-2 3 2 4 0 8M31 6c-2 3 2 4 0 8"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">SentiPulse</div>
+        <div class="brand-sub" id="businessName">Customer feedback intelligence</div>
+      </div>
+    </div>
+    <div class="top-actions">
+      <div class="updated"><span class="dot busy" id="statusDot"></span><span id="updatedText">Loading...</span></div>
+      <button class="btn" id="refreshBtn" type="button">Refresh</button>
+    </div>
+  </header>
+
+  <section class="filters" aria-label="Filters">
+    <div class="filter-group">
+      <div class="filter-label">Period</div>
+      <div class="pills" id="rangePills" role="group" aria-label="Date range">
+        <button type="button" class="pill" data-range="7d">7 days</button>
+        <button type="button" class="pill" data-range="30d">30 days</button>
+        <button type="button" class="pill" data-range="90d">90 days</button>
+        <button type="button" class="pill" data-range="thisMonth">This month</button>
+        <button type="button" class="pill" data-range="lastMonth">Last month</button>
+        <button type="button" class="pill" data-range="all">All time</button>
+      </div>
+    </div>
+    <label class="select-wrap"><span>Month</span><select id="monthSelect"><option value="">Pick a month</option></select></label>
+    <div class="select-wrap custom-range">
+      <span>Custom range</span>
+      <div class="range-inputs">
+        <input type="date" id="fromDate" aria-label="From date">
+        <span class="to">to</span>
+        <input type="date" id="toDate" aria-label="To date">
+        <button class="btn small" id="applyRange" type="button">Apply</button>
+      </div>
+    </div>
+    <label class="select-wrap"><span>Category</span><select id="categorySelect"></select></label>
+    <label class="select-wrap"><span>Sentiment</span><select id="sentimentSelect"></select></label>
+    <button class="btn ghost" id="resetBtn" type="button">Reset</button>
+  </section>
+  <div class="period-line" id="periodLine"></div>
+
+  <div class="banner error" id="errorBanner" hidden>
+    <span id="errorText"></span>
+    <button class="btn small" id="retryBtn" type="button">Retry</button>
+  </div>
+
+  <div class="empty" id="emptyState" hidden>
+    <div class="empty-title">No feedback matches these filters</div>
+    <div class="empty-sub">Try a wider date range, or reset the filters.</div>
+    <button class="btn" id="emptyResetBtn" type="button">Reset filters</button>
+  </div>
+
+  <main id="content">
+    <section class="kpis" aria-label="Key numbers">
+      <div class="kpi"><div class="label">Responses</div><div class="value" id="kpiTotal">-</div><div class="delta" id="kpiTotalDelta"></div></div>
+      <div class="kpi"><div class="label">Average rating</div><div class="value" id="kpiRating">-</div><div class="delta" id="kpiRatingDelta"></div></div>
+      <div class="kpi"><div class="label">Average sentiment</div><div class="value" id="kpiScore">-</div><div class="delta" id="kpiScoreDelta"></div></div>
+      <div class="kpi"><div class="label">Negative feedback</div><div class="value" id="kpiNeg">-</div><div class="delta" id="kpiNegDelta"></div></div>
+      <div class="kpi"><div class="label">Urgent items</div><div class="value" id="kpiUrgent">-</div><div class="delta" id="kpiUrgentDelta"></div></div>
+      <div class="kpi"><div class="label">Pipeline health</div><div class="value" id="kpiHealth">-</div><div class="delta" id="kpiHealthSub"></div></div>
+    </section>
+
+    <section class="grid">
+      <article class="card span-8"><h2>Sentiment over time</h2><div class="card-body" id="trendBody"><div class="placeholder">Chart arrives in Step 7.2</div></div></article>
+      <article class="card span-4"><h2>Sentiment split</h2><div class="card-body" id="distBody"><div class="placeholder">Chart arrives in Step 7.2</div></div></article>
+      <article class="card span-6"><h2>Top complaints</h2><div class="card-body" id="complaintsBody"><div class="placeholder">Chart arrives in Step 7.2</div></div></article>
+      <article class="card span-6"><h2>Category by sentiment</h2><div class="card-body" id="categoryBody"><div class="placeholder">Chart arrives in Step 7.2</div></div></article>
+      <article class="card span-4"><h2>Rating distribution</h2><div class="card-body" id="ratingBody"><div class="placeholder">Chart arrives in Step 7.2</div></div></article>
+      <article class="card span-8"><h2>What customers talk about</h2><div class="card-body" id="wordsBody"><div class="placeholder">Arrives in Step 7.3</div></div></article>
+      <article class="card span-12"><h2>Urgent items</h2><div class="card-body" id="urgentBody"><div class="placeholder">Arrives in Step 7.3</div></div></article>
+      <article class="card span-12"><h2>Recent feedback</h2><div class="card-body" id="recentBody"><div class="placeholder">Arrives in Step 7.3</div></div></article>
+    </section>
+  </main>
+
+  <footer class="foot">SentiPulse &middot; AI-powered feedback analytics &middot; Built with Google Sheets and Apps Script</footer>
+</div>
+<?!= include('Script'); ?>
+<?!= include('Charts'); ?>
+<?!= include('Panels'); ?>
+</body>
+</html>

@@ -1,0 +1,279 @@
+<style>
+.muted { color: var(--muted); }
+.center { text-align: center; }
+.sub { font-size: 11px; text-transform: uppercase; letter-spacing: .7px; color: var(--muted); margin-bottom: 8px; }
+.hint { color: var(--muted); font-size: 12px; margin-top: 12px; }
+
+.words-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 22px; }
+.cloud { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; align-content: flex-start; font-family: var(--serif); }
+.cloud-word { background: none; border: 0; cursor: pointer; padding: 2px 6px; border-radius: 6px; font-family: inherit; line-height: 1.2; }
+.cloud-word:hover, .cloud-word:focus-visible { background: var(--panel2); outline: none; }
+.word-list { list-style: none; margin: 0; padding: 0; }
+.word-row { display: grid; grid-template-columns: 90px 1fr 28px; align-items: center; gap: 8px; margin: 8px 0; font-size: 13px; }
+.word-row span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.word-bar { height: 8px; background: var(--panel2); border-radius: 4px; overflow: hidden; }
+.word-bar i { display: block; height: 100%; background: var(--accent2); }
+.word-row b { text-align: right; }
+
+.urgent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+.urgent-card { background: #fdf1ef; border: 1px solid #ebc4bd; border-left: 4px solid var(--neg); border-radius: 10px; padding: 12px 14px; }
+.urgent-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 12px; margin-bottom: 8px; }
+.urgent-head .id { font-weight: 800; color: #8a2f24; }
+.urgent-summary { font-weight: 700; margin-bottom: 6px; }
+.urgent-text { color: #5a4036; font-size: 13px; white-space: pre-wrap; word-break: break-word; }
+.all-clear { padding: 26px; text-align: center; color: var(--pos); background: var(--panel2); border-radius: 10px; font-weight: 600; }
+
+.chip { display: inline-block; background: var(--panel2); border: 1px solid var(--line); color: var(--brown-mid); border-radius: 999px; padding: 2px 10px; font-size: 12px; margin: 2px 4px 2px 0; }
+.stars { letter-spacing: 1px; white-space: nowrap; }
+.stars .on { color: #e0a526; } .stars .off { color: #dccfc2; }
+.badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+.badge.pos { background: #e4f0e2; color: #3f7240; } .badge.neu { background: #efe9e2; color: #7a6a5c; }
+.badge.mix { background: #fbefd0; color: #8a6410; } .badge.neg { background: #f8dfda; color: #9a3a2d; }
+.tag-urgent { background: var(--neg); color: #fff; font-size: 10px; font-weight: 800; border-radius: 4px; padding: 1px 6px; margin-left: 6px; letter-spacing: .5px; }
+
+.table-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 12px; }
+.table-tools input[type=search] { flex: 1 1 260px; background: #fff; color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; font-size: 14px; }
+.table-tools input[type=search]:focus { outline: 2px solid var(--accent2); }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; }
+.ftable { width: 100%; border-collapse: collapse; min-width: 700px; font-size: 13px; }
+.ftable th { text-align: left; background: var(--panel2); color: var(--brown-dark); font-weight: 700; padding: 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.ftable th.plain { padding: 10px 12px; }
+.ftable th button { all: unset; display: block; width: 100%; box-sizing: border-box; padding: 10px 12px; cursor: pointer; }
+.ftable th button:hover, .ftable th button:focus-visible { background: var(--line); }
+.ftable th.sorted button::after { content: ' \25B2'; font-size: 10px; color: var(--accent2); }
+.ftable th.sorted.desc button::after { content: ' \25BC'; }
+.ftable td { padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.ftable tr.main { cursor: pointer; }
+.ftable tr.main:hover, .ftable tr.main:focus-visible { background: #fbf6ef; outline: none; }
+.ftable tr.main.open { background: #f6ede2; }
+.ftable tr.detail.collapsed { display: none; }
+.ftable tr.detail td { background: #fbf7f2; padding: 14px 18px; }
+.ftable .nowrap { white-space: nowrap; }
+.score { color: var(--muted); font-size: 12px; margin-left: 6px; }
+.detail-text { white-space: pre-wrap; word-break: break-word; border-left: 3px solid var(--accent2); padding-left: 12px; margin: 6px 0 10px; font-family: var(--serif); font-size: 14px; }
+.table-more { text-align: center; margin-top: 12px; }
+
+@media (max-width: 900px) { .words-layout { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+(function () {
+  'use strict';
+
+  var esc = SP.esc;
+  var PAGE = 20;
+  var BADGE = { Positive: 'pos', Neutral: 'neu', Mixed: 'mix', Negative: 'neg' };
+  var SHADES = ['#6f4e37', '#8d5524', '#a9744f', '#4e342e', '#b07a4a'];
+
+  var tableState = { rows: [], search: '', sortKey: 'time', sortDir: 'desc', visible: PAGE };
+  var expanded = {};
+  var tableReady = false;
+
+  function $(id) { return document.getElementById(id); }
+
+  function badge(s) {
+    return '<span class="badge ' + (BADGE[s] || 'neu') + '">' + esc(s || 'Unknown') + '</span>';
+  }
+
+  function stars(r) {
+    if (r === null || r === undefined || !isFinite(Number(r))) { return '<span class="muted">-</span>'; }
+    var n = Math.max(0, Math.min(5, Math.round(Number(r))));
+    return '<span class="stars" title="' + n + ' / 5"><span class="on">' + '\u2605'.repeat(n) +
+           '</span><span class="off">' + '\u2605'.repeat(5 - n) + '</span></span>';
+  }
+
+  function chips(list) {
+    return (list || []).map(function (t) { return '<span class="chip">' + esc(t) + '</span>'; }).join('');
+  }
+
+  /* ---------- Word frequency ---------- */
+
+  function renderWords(d) {
+    var body = $('wordsBody');
+    var words = d.words || [];
+    if (!words.length) { body.innerHTML = '<div class="placeholder">No words to show in this period</div>'; return; }
+
+    var max = words[0].count;
+    var min = words[words.length - 1].count;
+
+    var cloud = words.slice().sort(function (a, b) { return a.word.localeCompare(b.word); }).map(function (w, i) {
+      var size = 13 + (max === min ? 10 : Math.round(21 * (w.count - min) / (max - min)));
+      return '<button type="button" class="cloud-word" data-word="' + esc(w.word) + '" style="font-size:' + size +
+             'px;color:' + SHADES[i % SHADES.length] + ';" title="' + w.count +
+             ' feedback(s). Click to find them in the table.">' + esc(w.word) + '</button>';
+    }).join('');
+
+    var list = words.slice(0, 8).map(function (w) {
+      return '<li class="word-row"><span>' + esc(w.word) + '</span><span class="word-bar"><i style="width:' +
+             Math.max(4, Math.round(100 * w.count / max)) + '%"></i></span><b>' + w.count + '</b></li>';
+    }).join('');
+
+    body.innerHTML = '<div class="words-layout"><div class="cloud">' + cloud + '</div>' +
+      '<div><div class="sub">Most mentioned</div><ul class="word-list">' + list + '</ul></div></div>' +
+      '<div class="hint">Click a word to find the feedback that mentions it.</div>';
+  }
+
+  /* ---------- Urgent items ---------- */
+
+  function renderUrgent(d) {
+    var body = $('urgentBody');
+    var list = d.urgent || [];
+    if (!list.length) { body.innerHTML = '<div class="all-clear">No urgent items in this period. Nice!</div>'; return; }
+
+    var cards = list.map(function (r) {
+      return '<div class="urgent-card">' +
+        '<div class="urgent-head"><span class="id">' + esc(r.id) + '</span><span class="chip">' + esc(r.category) + '</span>' +
+        stars(r.rating) + '<span class="muted">' + esc(r.time) + '</span></div>' +
+        '<div class="urgent-summary">' + esc(r.summary) + '</div>' +
+        '<div class="urgent-text">\u201C' + esc(r.feedback) + '\u201D</div>' +
+        '<div style="margin-top:8px;">' + chips(r.topics) + '</div></div>';
+    }).join('');
+
+    var more = (d.kpis && d.kpis.urgent > list.length)
+      ? '<div class="hint">Showing the ' + list.length + ' most recent of ' + d.kpis.urgent + ' urgent items.</div>' : '';
+    body.innerHTML = '<div class="urgent-grid">' + cards + '</div>' + more;
+  }
+
+  /* ---------- Recent feedback table ---------- */
+
+  function filteredSorted() {
+    var q = tableState.search.trim().toLowerCase();
+    var rows = tableState.rows.filter(function (r) {
+      if (!q) { return true; }
+      var hay = [r.id, r.category, r.summary, r.feedback, r.sentiment, (r.topics || []).join(' ')].join(' ').toLowerCase();
+      return hay.indexOf(q) !== -1;
+    });
+    var key = tableState.sortKey;
+    var dir = tableState.sortDir === 'asc' ? 1 : -1;
+    rows.sort(function (a, b) {
+      var x = a[key], y = b[key];
+      if (key === 'time' || key === 'category') { return dir * String(x || '').localeCompare(String(y || '')); }
+      x = (x === null || x === undefined) ? -99 : Number(x);
+      y = (y === null || y === undefined) ? -99 : Number(y);
+      return dir * (x - y);
+    });
+    return rows;
+  }
+
+  function rowHtml(r) {
+    var open = expanded[r.id] === true;
+    var score = (r.score === null || r.score === undefined) ? '' : '<span class="score">' + (r.score > 0 ? '+' : '') + Number(r.score).toFixed(2) + '</span>';
+    var urgent = r.urgent ? '<span class="tag-urgent">URGENT</span>' : '';
+    return '<tr class="main' + (open ? ' open' : '') + '" data-id="' + esc(r.id) + '" tabindex="0" aria-expanded="' + open + '">' +
+      '<td class="nowrap">' + esc(r.time) + '</td>' +
+      '<td>' + esc(r.category) + '</td>' +
+      '<td>' + stars(r.rating) + '</td>' +
+      '<td class="nowrap">' + badge(r.sentiment) + score + '</td>' +
+      '<td>' + esc(r.summary) + urgent + '</td></tr>' +
+      '<tr class="detail' + (open ? '' : ' collapsed') + '"><td colspan="5">' +
+      '<div class="detail-text">\u201C' + esc(r.feedback) + '\u201D</div>' +
+      '<div>' + chips(r.topics) + '<span class="muted" style="margin-left:8px;">' + esc(r.id) + '</span></div></td></tr>';
+  }
+
+  function updateTable() {
+    var rows = filteredSorted();
+    var shown = rows.slice(0, tableState.visible);
+
+    $('tableCount').textContent = rows.length === 0 ? 'No matching feedback' : 'Showing ' + shown.length + ' of ' + rows.length;
+    $('clearSearch').hidden = !tableState.search;
+    $('showMore').hidden = shown.length >= rows.length;
+
+    $('feedbackRows').innerHTML = rows.length
+      ? shown.map(rowHtml).join('')
+      : '<tr><td colspan="5" class="muted center" style="padding:26px;">No feedback matches your search.</td></tr>';
+
+    Array.prototype.forEach.call(document.querySelectorAll('#feedbackHead th[data-sort]'), function (th) {
+      var active = th.getAttribute('data-sort') === tableState.sortKey;
+      th.classList.toggle('sorted', active);
+      th.classList.toggle('desc', active && tableState.sortDir === 'desc');
+      th.setAttribute('aria-sort', active ? (tableState.sortDir === 'asc' ? 'ascending' : 'descending') : 'none');
+    });
+  }
+
+  function toggleRow(tr) {
+    var id = tr.getAttribute('data-id');
+    var open = !(expanded[id] === true);
+    expanded[id] = open;
+    tr.classList.toggle('open', open);
+    tr.setAttribute('aria-expanded', String(open));
+    if (tr.nextElementSibling) { tr.nextElementSibling.classList.toggle('collapsed', !open); }
+  }
+
+  function setSearch(text) {
+    tableState.search = text;
+    tableState.visible = PAGE;
+    $('feedbackSearch').value = text;
+    updateTable();
+  }
+
+  function ensureTable() {
+    if (tableReady) { return; }
+    $('recentBody').innerHTML =
+      '<div class="table-tools">' +
+        '<input id="feedbackSearch" type="search" placeholder="Search feedback, topics, category, ID..." aria-label="Search feedback">' +
+        '<span id="tableCount" class="muted"></span>' +
+        '<button id="clearSearch" class="btn ghost small" type="button" hidden>Clear search</button>' +
+      '</div>' +
+      '<div class="table-wrap"><table class="ftable"><thead><tr id="feedbackHead">' +
+        '<th data-sort="time"><button type="button">Time</button></th>' +
+        '<th data-sort="category"><button type="button">Category</button></th>' +
+        '<th data-sort="rating"><button type="button">Rating</button></th>' +
+        '<th data-sort="score"><button type="button">Sentiment</button></th>' +
+        '<th class="plain">AI summary</th>' +
+      '</tr></thead><tbody id="feedbackRows"></tbody></table></div>' +
+      '<div class="table-more"><button id="showMore" class="btn ghost" type="button" hidden>Show more</button></div>' +
+      '<div class="hint">Click a row to read the full feedback.</div>';
+
+    $('feedbackSearch').addEventListener('input', function () { setSearch(this.value); });
+    $('clearSearch').addEventListener('click', function () { setSearch(''); $('feedbackSearch').focus(); });
+    $('showMore').addEventListener('click', function () { tableState.visible += PAGE; updateTable(); });
+
+    $('feedbackHead').addEventListener('click', function (e) {
+      var th = e.target.closest ? e.target.closest('th[data-sort]') : null;
+      if (!th) { return; }
+      var key = th.getAttribute('data-sort');
+      if (tableState.sortKey === key) {
+        tableState.sortDir = tableState.sortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        tableState.sortKey = key;
+        tableState.sortDir = (key === 'category') ? 'asc' : 'desc';
+      }
+      updateTable();
+    });
+
+    $('feedbackRows').addEventListener('click', function (e) {
+      var tr = e.target.closest ? e.target.closest('tr.main') : null;
+      if (tr) { toggleRow(tr); }
+    });
+    $('feedbackRows').addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter' && e.key !== ' ') { return; }
+      var tr = e.target.closest ? e.target.closest('tr.main') : null;
+      if (tr) { e.preventDefault(); toggleRow(tr); }
+    });
+
+    tableReady = true;
+  }
+
+  function renderRecent(d) {
+    ensureTable();
+    tableState.rows = d.recent || [];
+    updateTable();
+  }
+
+  /* ---------- Hook into the dashboard ---------- */
+
+  $('wordsBody').addEventListener('click', function (e) {
+    var btn = e.target.closest ? e.target.closest('.cloud-word') : null;
+    if (!btn) { return; }
+    ensureTable();
+    setSearch(btn.getAttribute('data-word'));
+    $('recentBody').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  SP.register(function (d) {
+    [renderWords, renderUrgent, renderRecent].forEach(function (fn) {
+      try { fn(d); } catch (e) { if (window.console) { console.error('Panel failed: ' + fn.name, e); } }
+    });
+  });
+})();
+</script>

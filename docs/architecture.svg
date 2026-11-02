@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620" role="img" aria-label="SentiPulse architecture diagram" xmlns:c2pa="http://c2pa.org/manifest"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYToxMGRjNGMyZS02YTYzLTRkYmUtYWVmNi03NDlhNzU3NTc1OTcAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaNRaaCH4XeOUAx0K6xA4cykAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDowNWFiZTdkZi04YmY2LTRmMGEtYWVmOC04MzAyY2M5Y2M0NmJscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNoImajmDB+2/G2dtcItw/0UAAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggabX2JnqE7MA/P+S3ZJu00aX/tiH+/8aMcbPSDMyoNaakZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaPTRfRUFrBbwY4b2hoGVPlkAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRNAAAAAAAAAAAAAAAAAGRoYXNoWCATr9UK7I0Dv3i/Uk4WETUDQHQcOwmGWSj+4NjSr0zNkWRuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBjQZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOjEwZGM0YzJlLTZhNjMtNGRiZS1hZWY2LTc0OWE3NTc1NzU5Ny9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjJiMWU5YzFiLWVmN2EtNDYzNy05YjQ4LTRlZGM4MjIyNTIxN3JjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCBptfYmeoTswD8/5Ldkm7TRpf+2If7/xoxxs9IMzKg1pqJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFgg+gDQPZQ0OGV72NxggLmLDB3ulJKBmOFdSIBsLu0ZnQKiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFgg1Y9xbww6t5m1uW3IpGzXiXr6Mm2Xvks4ewmHkez44hJ0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQFs2sh/JC+PxshUYkU/hJngBn0poG7LdfYAGibK4h/r01RrnKWYE7ieLV93QXMH8ryMZmDS14BVkbACbohT1IuM=</c2pa:manifest></metadata>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6f4e37"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="620" fill="#f6efe6"/>
+  <text x="40" y="32" font-family="Georgia, serif" font-size="22" font-weight="bold" fill="#3e2723">SentiPulse architecture</text>
+
+  <!-- Row 1: input -->
+  <rect x="40" y="50" width="180" height="60" rx="12" fill="#ffffff" stroke="#6f4e37" stroke-width="2"/>
+  <text x="130" y="86" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#3e2723">Customer</text>
+
+  <rect x="290" y="50" width="200" height="60" rx="12" fill="#ffffff" stroke="#6f4e37" stroke-width="2"/>
+  <text x="390" y="78" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#3e2723">Google Form</text>
+  <text x="390" y="98" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#8a7768">category, rating, text, email</text>
+
+  <rect x="560" y="50" width="240" height="60" rx="12" fill="#ffffff" stroke="#6f4e37" stroke-width="2"/>
+  <text x="680" y="78" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#3e2723">Responses tab</text>
+  <text x="680" y="98" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#8a7768">raw data, never edited</text>
+
+  <line x1="220" y1="80" x2="288" y2="80" stroke="#6f4e37" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="254" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#8a7768">submits</text>
+  <line x1="490" y1="80" x2="558" y2="80" stroke="#6f4e37" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="524" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#8a7768">saves row</text>
+
+  <line x1="680" y1="110" x2="680" y2="188" stroke="#6f4e37" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="692" y="155" font-family="Arial, sans-serif" font-size="12" fill="#8a7768">form-submit trigger</text>
+
+  <!-- Row 2: processor -->
+  <rect x="40" y="190" width="760" height="120" rx="14" fill="#3e2723"/>
+  <text x="420" y="224" text-anchor="middle" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#f6efe6">Apps Script processor</text>
+  <text x="420" y="248" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#d7b99a">setup check → lock → copy new rows → analyze → write results → alerts → log</text>
+  <rect x="70" y="266" width="170" height="30" rx="15" fill="#5d4037"/>
+  <text x="155" y="286" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#f6efe6">onFormSubmit</text>
+  <rect x="260" y="266" width="210" height="30" rx="15" fill="#5d4037"/>
+  <text x="365" y="286" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#f6efe6">retryFailed (every hour)</text>
+  <rect x="490" y="266" width="260" height="30" rx="15" fill="#5d4037"/>
+  <text x="620" y="286" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#f6efe6">sendDailyDigest (daily, 8 AM)</text>
+
+  <!-- AI -->
+  <rect x="880" y="170" width="270" height="64" rx="12" fill="#f3ebe1" stroke="#6f4e37" stroke-width="2"/>
+  <text x="1015" y="198" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#3e2723">Gemini (main AI)</text>
+  <text x="1015" y="219" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#8a7768">gemini-3.8-flash, thinking: low</text>
+
+  <rect x="880" y="270" width="270" height="64" rx="12" fill="#ffffff" stroke="#6f4e37" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="1015" y="298" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#3e2723">Groq (backup AI)</text>
+  <text x="1015" y="319" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#8a7768">openai/gpt-oss-20b</text>
+
+  <line x1="800" y1="222" x2="878" y2="204" stroke="#6f4e37" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="800" y1="278" x2="878" y2="300" stroke="#6f4e37" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow)"/>
+  <line x1="1015" y1="234" x2="1015" y2="268" stroke="#6f4e37" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow)"/>
+  <text x="1027" y="256" font-family="Arial, sans-serif" font-size="12" fill="#8a7768">if busy (429 or 503)</text>
+
+  <!-- Row 3: outputs -->
+  <rect x="40" y="410" width="210" height="64" rx="12" fill="#ffffff" stroke="#6f4e37" stroke-width="2"/>
+  <text x="145" y="437" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#3e2723">Analysis tab</text>
+  <text x="145" y="458" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#8a7768">sentiment, topics, status</text>
+
+  <rect x="290" y="410" width="170" height="64" rx="12" fill="#ffffff" stroke="#6f4e37" stroke-width="2"/>
+  <text x="375" y="437" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#3e2723">Logs tab</text>
+  <text x="375" y="458" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#8a7768">every event and error</text>
+
+  <rect x="500" y="410" width="170" height="64" rx="12" fill="#ffffff" stroke="#6f4e37" stroke-width="2"/>
+  <text x="585" y="437" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#3e2723">Config tab</text>
+  <text x="585" y="458" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#8a7768">editable settings</text>
+
+  <rect x="710" y="410" width="210" height="64" rx="12" fill="#ffffff" stroke="#6f4e37" stroke-width="2"/>
+  <text x="815" y="437" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#3e2723">Gmail emails</text>
+  <text x="815" y="458" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#8a7768">alerts, admin notices, digest</text>
+
+  <rect x="960" y="410" width="200" height="64" rx="12" fill="#ffffff" stroke="#6f4e37" stroke-width="2"/>
+  <text x="1060" y="437" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#3e2723">Dashboard</text>
+  <text x="1060" y="458" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#8a7768">HTML web app, Chart.js</text>
+
+  <line x1="145" y1="310" x2="145" y2="408" stroke="#6f4e37" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="157" y="362" font-family="Arial, sans-serif" font-size="12" fill="#8a7768">results</text>
+  <line x1="375" y1="310" x2="375" y2="408" stroke="#6f4e37" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="387" y="362" font-family="Arial, sans-serif" font-size="12" fill="#8a7768">events</text>
+  <line x1="585" y1="408" x2="585" y2="312" stroke="#6f4e37" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="597" y="362" font-family="Arial, sans-serif" font-size="12" fill="#8a7768">settings</text>
+  <line x1="780" y1="310" x2="780" y2="408" stroke="#6f4e37" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="792" y="362" font-family="Arial, sans-serif" font-size="12" fill="#8a7768">alerts and digest</text>
+
+  <path d="M145,474 V540 H1060 V476" fill="none" stroke="#6f4e37" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="600" y="531" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#8a7768">dashboard reads the Done rows (cached for 5 minutes, no customer emails)</text>
+
+  <text x="40" y="590" font-family="Arial, sans-serif" font-size="13" fill="#5d4037">Private by default: the web app runs as its owner and only the owner can open it. API keys live in Script Properties, never in a cell or in the code.</text>
+</svg>

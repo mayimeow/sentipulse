@@ -1,0 +1,224 @@
+<script>
+(function () {
+  'use strict';
+
+  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var ORDER = ['Positive', 'Neutral', 'Mixed', 'Negative'];
+  var RATING_COLORS = ['#b5483a', '#d9774a', '#d9a441', '#a3a95b', '#5b8c5a'];
+  var C = SP.colors;
+  var charts = {};
+
+  function $(id) { return document.getElementById(id); }
+
+  function fmtDay(key) {
+    var p = String(key).split('-');
+    return MONTHS[Number(p[1]) - 1] + ' ' + Number(p[2]);
+  }
+
+  /** Label for a trend point: a day, the Monday of a week, or a month. */
+  function fmtBucket(key, unit) {
+    var p = String(key).split('-');
+    if (unit === 'month') { return MONTHS[Number(p[1]) - 1] + ' ' + p[0]; }
+    if (unit === 'week') { return 'Wk ' + MONTHS[Number(p[1]) - 1] + ' ' + Number(p[2]); }
+    return MONTHS[Number(p[1]) - 1] + ' ' + Number(p[2]);
+  }
+
+  /* ---------- Small chart toolbox ---------- */
+
+  function destroyChart(key) {
+    if (charts[key]) {
+      if (charts[key].chart) { charts[key].chart.destroy(); }
+      delete charts[key];
+    }
+  }
+
+  function showMessage(key, bodyId, text) {
+    destroyChart(key);
+    $(bodyId).innerHTML = '<div class="placeholder">' + SP.esc(text) + '</div>';
+  }
+
+  function draw(key, bodyId, height, config) {
+    var body = $(bodyId);
+    var entry = charts[key];
+    if (entry && entry.chart) { entry.chart.destroy(); entry.chart = null; }
+    if (!entry || !body.contains(entry.canvas)) {
+      body.innerHTML = '<div style="position:relative;width:100%;height:' + height + 'px;"><canvas></canvas></div>';
+      entry = charts[key] = { canvas: body.querySelector('canvas'), chart: null };
+    } else {
+      entry.canvas.parentNode.style.height = height + 'px';
+    }
+    entry.chart = new Chart(entry.canvas, config);
+  }
+
+  function setupDefaults() {
+    Chart.defaults.color = C.muted;
+    Chart.defaults.borderColor = C.line;
+    Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+    Chart.defaults.font.size = 12;
+    Chart.defaults.animation.duration = 500;
+  }
+
+  var legendBottom = { position: 'bottom', labels: { boxWidth: 12, boxHeight: 12, padding: 14 } };
+
+  /* ---------- 1. Sentiment over time ---------- */
+
+  function drawTrend(d) {
+    var t = d.trend;
+    if (!t.length) { showMessage('trend', 'trendBody', 'No data in this period'); return; }
+    var many = t.length > 31;
+
+    var datasets = ORDER.map(function (s) {
+      return {
+        type: 'bar', label: s, data: t.map(function (x) { return x[s]; }),
+        backgroundColor: C[s], stack: 'count', yAxisID: 'y',
+        borderRadius: many ? 0 : 3, maxBarThickness: 30, order: 2
+      };
+    });
+    datasets.push({
+      type: 'line', label: 'Avg sentiment score', data: t.map(function (x) { return x.avgScore; }),
+      borderColor: '#3e2723', backgroundColor: '#3e2723', yAxisID: 'y1',
+      tension: 0.3, spanGaps: true, borderWidth: 2, pointRadius: many ? 0 : 3, order: 1
+    });
+
+    draw('trend', 'trendBody', 300, {
+      type: 'bar',
+      data: { labels: t.map(function (x) { return fmtBucket(x.date, d.period.unit); }), datasets: datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: { legend: legendBottom },
+        scales: {
+          x: { stacked: true, grid: { display: false }, ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 10 } },
+          y: { stacked: true, beginAtZero: true, ticks: { precision: 0 }, title: { display: true, text: 'Responses' } },
+          y1: { position: 'right', min: -1, max: 1, grid: { drawOnChartArea: false },
+                title: { display: true, text: 'Score' }, ticks: { stepSize: 0.5 } }
+        }
+      }
+    });
+  }
+
+  /* ---------- 2. Sentiment split (donut) ---------- */
+
+  function drawDistribution(d) {
+    var total = 0;
+    ORDER.forEach(function (s) { total += d.distribution[s] || 0; });
+    if (!total) { showMessage('dist', 'distBody', 'No data in this period'); return; }
+
+    var centerText = {
+      id: 'centerText',
+      afterDraw: function (chart) {
+        var meta = chart.getDatasetMeta(0);
+        if (!meta || !meta.data || !meta.data.length) { return; }
+        var ctx = chart.ctx, x = meta.data[0].x, y = meta.data[0].y;
+        ctx.save();
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillStyle = C.text; ctx.font = 'bold 28px sans-serif';
+        ctx.fillText(String(total), x, y - 6);
+        ctx.fillStyle = C.muted; ctx.font = '12px sans-serif';
+        ctx.fillText('responses', x, y + 16);
+        ctx.restore();
+      }
+    };
+
+    draw('dist', 'distBody', 300, {
+      type: 'doughnut',
+      data: {
+        labels: ORDER,
+        datasets: [{
+          data: ORDER.map(function (s) { return d.distribution[s] || 0; }),
+          backgroundColor: ORDER.map(function (s) { return C[s]; }),
+          borderColor: '#ffffff', borderWidth: 3
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, cutout: '66%', plugins: { legend: legendBottom } },
+      plugins: [centerText]
+    });
+  }
+
+  /* ---------- 3. Top complaints ---------- */
+
+  function drawComplaints(d) {
+    var list = d.topComplaints;
+    if (!list.length) { showMessage('complaints', 'complaintsBody', 'No complaints in this period. Nice!'); return; }
+
+    draw('complaints', 'complaintsBody', Math.max(220, 36 * list.length + 50), {
+      type: 'bar',
+      data: {
+        labels: list.map(function (x) { return x.topic; }),
+        datasets: [{ label: 'Complaints', data: list.map(function (x) { return x.count; }),
+                     backgroundColor: C.Negative, borderRadius: 4, maxBarThickness: 24 }]
+      },
+      options: {
+        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { x: { beginAtZero: true, ticks: { precision: 0 } }, y: { grid: { display: false } } }
+      }
+    });
+  }
+
+  /* ---------- 4. Category by sentiment ---------- */
+
+  function drawCategories(d) {
+    var list = d.categoryBySentiment;
+    if (!list.length) { showMessage('category', 'categoryBody', 'No data in this period'); return; }
+
+    draw('category', 'categoryBody', Math.max(240, 42 * list.length + 80), {
+      type: 'bar',
+      data: {
+        labels: list.map(function (x) { return x.category; }),
+        datasets: ORDER.map(function (s) {
+          return { label: s, data: list.map(function (x) { return x[s]; }),
+                   backgroundColor: C[s], stack: 'cat', maxBarThickness: 26 };
+        })
+      },
+      options: {
+        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: { legend: legendBottom },
+        scales: { x: { stacked: true, beginAtZero: true, ticks: { precision: 0 } },
+                  y: { stacked: true, grid: { display: false } } }
+      }
+    });
+  }
+
+  /* ---------- 5. Rating distribution ---------- */
+
+  function drawRatings(d) {
+    var data = d.ratingDistribution;
+    var total = data.reduce(function (a, b) { return a + b; }, 0);
+    if (!total) { showMessage('rating', 'ratingBody', 'No ratings in this period'); return; }
+
+    draw('rating', 'ratingBody', 260, {
+      type: 'bar',
+      data: {
+        labels: ['1 star', '2 stars', '3 stars', '4 stars', '5 stars'],
+        datasets: [{ label: 'Responses', data: data, backgroundColor: RATING_COLORS, borderRadius: 5, maxBarThickness: 44 }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { x: { grid: { display: false } }, y: { beginAtZero: true, ticks: { precision: 0 } } }
+      }
+    });
+  }
+
+  /* ---------- Hook into the dashboard ---------- */
+
+  var BODY_IDS = ['trendBody', 'distBody', 'complaintsBody', 'categoryBody', 'ratingBody'];
+
+  function renderCharts(d) {
+    if (typeof Chart === 'undefined') {
+      BODY_IDS.forEach(function (id) {
+        $(id).innerHTML = '<div class="placeholder">Charts could not load. Check your internet connection or ad blocker, then refresh.</div>';
+      });
+      return;
+    }
+    setupDefaults();
+    [drawTrend, drawDistribution, drawComplaints, drawCategories, drawRatings].forEach(function (fn) {
+      try { fn(d); } catch (e) { if (window.console) { console.error('Chart failed: ' + fn.name, e); } }
+    });
+  }
+
+  SP.register(renderCharts);
+})();
+</script>
